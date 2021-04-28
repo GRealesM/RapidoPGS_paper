@@ -1,0 +1,43 @@
+#!/bin/bash
+#SBATCH -J PRScs
+#SBATCH -A CWALLACE-SL3-CPU
+#SBATCH --nodes 1
+#SBATCH --ntasks 15
+#SBATCH --time 08:00:00
+#SBATCH --mail-type FAIL
+#SBATCH -p skylake-himem
+#SBATCH --output=./err/%A_%a.err
+. /etc/profile.d/modules.sh # Leave this line (enables the module command)
+module purge                # Removes all modules still loaded
+#module load default-impi    # REQUIRED - loads the basic environment
+module load rhel7/default-peta4            # REQUIRED - loads the basic environment
+module load r-4.0.2-gcc-5.4.0-xyx46xb
+module load gcc-5.4.0-gcc-4.8.5-fis24gg
+export I_MPI_PIN_ORDER=scatter # Adjacent domains have minimal sharing of caches/sockets
+JOBID=$SLURM_JOB_ID
+echo -e "JobID: $JOBID"
+G=$SLURM_ARRAY_TASK_ID ### this is the array variable, you can use it the way you want. In this example I use it to select the gene based on the line number in a file
+
+# Define the variable for GWAS size, corresponding to traits:
+# Asthma, RA, T1D, T2D, BRCA, PRCA, CAD, MDD, BMI, Height
+# For MDD (N0 and N1 in columns), we used N0=113154, N1=59851, as they're Max and Median values, summing 173005
+# For BMI, we used median value: 233691
+# For Height, we used median value: 252021
+trait=(Asthma RA T1D T2D BRCA PRCA CAD MDD BMI Height RAint)
+gwasn=(127669 58284 14741 159208 256123 140306 184305 173005 233691 252021 80799)
+N=$((G - 1))
+S=${gwasn[@]:$N:1}
+T=${trait[@]:$N:1}
+
+Rscript /home/gr440/rds/rds-cew54-basis/05-PGS/v3/code/prscs_preprocess_20210317.R  $G
+# We need to source this conda script to be able to activate conda environment
+source ~/miniconda3/etc/profile.d/conda.sh
+# Get correct library
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/gr440/miniconda3/lib/
+
+conda activate base
+python PRScs/PRScs.py --ref_dir=../references/PRScs --bim_prefix=../datasets/dataset_$G --sst_file=../datasets/"$G"_PRScs.tsv --n_gwas=$S  --out_dir=../models/$T --seed=1
+
+echo -e "CHR\trsid\tBP\tALT\tREF\tweight" > ../models/"$T"_hm3_PRScs.full.model
+for chr in {1..22};do cat ../models/"$T"_pst_eff_a1_b0.5_phiauto_chr$chr.txt >> ../models/"$T"_hm3_PRScs.full.model ; done
+rm ../models/"$T"_pst_eff_a1_b0.5_phiauto_chr*.txt

@@ -1,5 +1,5 @@
 # Computing custom priors for BMI and Height
-# 2020/12/15
+# 2020/02/23
 # The previous version contained an error in the formula, so we include here a revised version
 
 library(data.table)
@@ -46,27 +46,29 @@ sd.prior.est <- function(data, h2, N, pi_i=1e-4){
 
 ## Custom prior for BMI
 
-bmi <- fread("../datasets/BMI_Locke_25673413_1-qcfilt.tsv.gz")
+bmi <- fread("../datasets/BMI-hm3.tsv.gz")
 bmi <- unique(bmi, by="SNPID") # So we ensure there are no duplicated variants at all
-bmi <- bmi[ALT_FREQ >= 0.01,]
+bmi <- bmi[ALT_FREQ >= 0.01 | ALT_FREQ <= 0.99 ,]
 h2 <- 0.246297646 # heritability estimate (h^2) obtained from LDhub 
 
 sd.prior.bmi <- sd.prior.est(bmi, h2,"N")
-# 0.08245557
+sd.prior.bmi
+# [1] 0.1272537
 
 # Custom prior for Height
 
-height <- fread("../datasets/HEIGHT_Wood_25282103_1-qcfilt.tsv.gz")
+height <- fread("../datasets/Height-hm3.tsv.gz")
 height <- unique(height, by="SNPID")
-height <- height[ALT_FREQ >= 0.01,]
+height <- height[ALT_FREQ >= 0.01 | ALT_FREQ <= 0.99 ,]
 h2 <- 0.4622973 # heritability estimate (h^2) obtained from LDhub 
 
 sd.prior.height <- sd.prior.est(height,h2,"N")
-# 0.09135172  
+sd.prior.height
+# [1] 0.1415274
 
 # Variances
-#> c(sd.prior.bmi, sd.prior.height)^2
-#[1] 0.006798920 0.008345137
+c(sd.prior.bmi, sd.prior.height)^2
+# [1] 0.01619351 0.02003000
 
 
 
