@@ -19,7 +19,7 @@
 - `LDpred2_perchr_run_20210317.R`: Run LDpred2-auto genome-wide (R script, to be called from slurm). LDpred2 results in the paper correspond to the per-chromosome approach.
 - `slurm_run_ldpred2perchr`: Slurm script for LDpred2-auto per-chromosome approach.
 - `slurm_run_PRScs`: Run PRScs (slurm script).
-- `slurm_run_rapidopgs: Run RápidoPGS (slurm script to run R code on the HPC).
+- `slurm_run_rapidopgs`: Run RápidoPGS (slurm script to run R code on the HPC).
 - `slurm_run_SBayesR`: Run SBayesR (slurm script).
 
 
