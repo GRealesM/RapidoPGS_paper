@@ -28,8 +28,8 @@ sdY.est <- function(vbeta, maf, n) {
 hm3 <- readRDS(url("https://ndownloader.figshare.com/files/25503788"))
 hm3 <- hm3[,1:4]
 # Additionally, we'll create another set of datasets, filtered by QC'd (ie. maf > 0.01 and hwe p-value > 1e-10) 1000 Genomes variants, for RápidoPGS comparison across different SNP sets.
-varlist <- fread("../datasets/RapidoPGS_panel_variants.txt", header=FALSE)
-varlist <- varlist[,V1]
+#varlist <- fread("../datasets/RapidoPGS_panel_variants.txt", header=FALSE)
+#varlist <- varlist[,V1]
 
 
 ## Asthma dataset
@@ -75,11 +75,11 @@ asthma <- asthma[!is_bad,]
 
 asthma[,SNPID:=paste(CHR,BP,sep=":")]
 # Filter by 1kG QC variants
-invarlist <- asthma$SNPID %in% varlist
-asthma.1kg <- asthma[invarlist,]
+#invarlist <- asthma$SNPID %in% varlist
+#asthma.1kg <- asthma[invarlist,]
 
 # Save file with 1kG variants
-fwrite(asthma.1kg, "../datasets/Asthma-1kg.tsv.gz", sep="\t")
+#fwrite(asthma.1kg, "../datasets/Asthma-1kg.tsv.gz", sep="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(asthma, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -140,11 +140,11 @@ ra[,SNPID:=paste(CHR,BP,sep=":")]
 ra[,c("OR","chi2"):=NULL]
 
 # Filter by 1000G QC variants
-invarlist <- ra$SNPID %in% varlist
-ra.1kg <- ra[invarlist,]
+#invarlist <- ra$SNPID %in% varlist
+#ra.1kg <- ra[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(ra.1kg, "../datasets/RA-1kg.tsv.gz", sep ="\t")
+#fwrite(ra.1kg, "../datasets/RA-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(ra, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -209,11 +209,11 @@ t1d <- t1d[!is_bad,]
 t1d[,SNPID:=paste(CHR,BP,sep=":")]
 
 # Filter by 1000G QC variants
-invarlist <- t1d$SNPID %in% varlist
-t1d.1kg <- t1d[invarlist,]
+#invarlist <- t1d$SNPID %in% varlist
+#t1d.1kg <- t1d[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(t1d.1kg, "../datasets/T1D-1kg.tsv.gz", sep ="\t")
+#fwrite(t1d.1kg, "../datasets/T1D-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(t1d, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -269,11 +269,11 @@ t2d <- t2d[!is_bad,]
 t2d <- t2d[,c("SNPID","CHR","BP", "REF","ALT","BETA","SE","P","n_eff")]
 
 # Filter by 1000G QC variants
-invarlist <- t2d$SNPID %in% varlist
-t2d.1kg <- t2d[invarlist,]
+#invarlist <- t2d$SNPID %in% varlist
+#t2d.1kg <- t2d[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(t2d.1kg, "../datasets/T2D-1kg.tsv.gz", sep ="\t")
+#fwrite(t2d.1kg, "../datasets/T2D-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(t2d, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -332,11 +332,11 @@ brca <- brca[!is_bad,]
 # Filter by 1000G QC variants
 # This dataset didn't have SNPID, so let's create it
 brca[,SNPID:=paste(CHR,BP,sep=":")]
-invarlist <- brca$SNPID %in% varlist
-brca.1kg <- brca[invarlist,]
+#invarlist <- brca$SNPID %in% varlist
+#brca.1kg <- brca[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(brca.1kg, "../datasets/BRCA-1kg.tsv.gz", sep ="\t")
+#fwrite(brca.1kg, "../datasets/BRCA-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(brca, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -390,11 +390,11 @@ prca <- prca[!is_bad,]
 # Filter by 1000G QC variants
 # This dataset didn't have SNPID, so let's create it
 prca[,SNPID:=paste(CHR,BP,sep=":")]
-invarlist <- prca$SNPID %in% varlist
-prca.1kg <- prca[invarlist,]
+#invarlist <- prca$SNPID %in% varlist
+#prca.1kg <- prca[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(prca.1kg, "../datasets/PRCA-1kg.tsv.gz", sep ="\t")
+#fwrite(prca.1kg, "../datasets/PRCA-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(prca, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -453,11 +453,11 @@ mdd[,chr:=NULL]
 # Filter by 1000G QC variants
 # This dataset didn't have SNPID, so let's create it
 mdd[,SNPID:=paste(CHR,BP,sep=":")]
-invarlist <- mdd$SNPID %in% varlist
-mdd.1kg <- mdd[invarlist,]
+#invarlist <- mdd$SNPID %in% varlist
+#mdd.1kg <- mdd[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(mdd.1kg, "../datasets/MDD-1kg.tsv.gz", sep ="\t")
+#fwrite(mdd.1kg, "../datasets/MDD-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(mdd, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -514,8 +514,8 @@ cad <- cad[!is_bad,]
 # Filter by 1000G QC variants
 # This dataset didn't have SNPID, so let's create it
 cad[,SNPID:=paste(CHR,BP,sep=":")]
-invarlist <- cad$SNPID %in% varlist
-cad.1kg <- cad[invarlist,]
+#invarlist <- cad$SNPID %in% varlist
+#cad.1kg <- cad[invarlist,]
 
 # Write 1000G qc-filtered file
 fwrite(cad.1kg, "../datasets/CAD-1kg.tsv.gz", sep ="\t")
@@ -580,10 +580,10 @@ ggsave("../figures/sd-approx-BMI.png", width = 10, height = 7)
 bmi <- bmi[!is_bad,]
 
 # Filter by 1000G QC variants
-invarlist <- bmi$SNPID %in% varlist
-bmi.1kg <- bmi[invarlist,]
+#invarlist <- bmi$SNPID %in% varlist
+#bmi.1kg <- bmi[invarlist,]
 
-fwrite(bmi.1kg, "../datasets/BMI-1kg.tsv.gz", sep="\t")
+#fwrite(bmi.1kg, "../datasets/BMI-1kg.tsv.gz", sep="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(bmi, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -647,10 +647,10 @@ ggsave("../figures/sd-approx-HEIGHT.png", width = 10, height = 7)
 height <- height[!is_bad,]
 
 # Filter by 1000G QC variants
-invarlist <- height$SNPID %in% varlist
-height.1kg <- height[invarlist,]
+#invarlist <- height$SNPID %in% varlist
+#height.1kg <- height[invarlist,]
 
-fwrite(height.1kg, "../datasets/Height-1kg.tsv.gz", sep="\t")
+#fwrite(height.1kg, "../datasets/Height-1kg.tsv.gz", sep="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(height, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
@@ -712,11 +712,11 @@ raint[,SNPID:=paste(CHR,BP,sep=":")]
 raint[,c("OR","chi2"):=NULL]
 
 # Filter by 1000G QC variants
-invarlist <- raint$SNPID %in% varlist
-raint.1kg <- raint[invarlist,]
+#invarlist <- raint$SNPID %in% varlist
+#raint.1kg <- raint[invarlist,]
 
 # Write 1000G qc-filtered file
-fwrite(raint.1kg, "../datasets/RAint-1kg.tsv.gz", sep ="\t")
+#fwrite(raint.1kg, "../datasets/RAint-1kg.tsv.gz", sep ="\t")
 
 # Filter (and align) to hm3 variants manifest
 setnames(raint, c("CHR","BP","REF","ALT", "BETA"), c("chr","pos","a0","a1","beta"))
